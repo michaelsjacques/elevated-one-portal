@@ -9,20 +9,19 @@
 <body style="margin:0">
   <div id="root"></div>
   <script type="module">
-    import { createRoot } from 'react-dom/client';
-    import React from 'react';
-
+import { createRoot } from 'react-dom/client';
 import _defineProperty from "@babel/runtime/helpers/defineProperty";
 import _toConsumableArray from "@babel/runtime/helpers/toConsumableArray";
 import _toArray from "@babel/runtime/helpers/toArray";
 import _slicedToArray from "@babel/runtime/helpers/slicedToArray";
 import React from "react";
-var __jsx = React.createElement;
-function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
-function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
 import { useState, useRef, useEffect, useContext, createContext } from "react";
 import { AreaChart, Area, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line } from "recharts";
 import { Search, Home, ChevronDown, ChevronRight, ChevronUp, LayoutDashboard, Wrench, ShoppingBag, Activity, Bell, FlaskConical, ClipboardList, BadgeCheck, Zap, Package, CreditCard, RotateCcw, Building2, FileText, Hammer, BookOpen, Send, Bot, User, X, Check, ArrowRight, TrendingUp, TrendingDown, AlertTriangle, Leaf, Cpu, BarChart2, Settings, LogOut, Plus, RefreshCw, Eye, MessageSquare, Clock, DollarSign, Star, Shield, PanelRightClose, PanelRightOpen, Download, Upload, Paperclip, CalendarDays, Banknote, Percent, Calculator, Lightbulb, Wind, Droplets, LayoutGrid, ExternalLink, Folder, FolderOpen, FilePlus, CheckCircle2, Circle, SlidersHorizontal, Ruler, Thermometer, Gauge, Table2, MapPin, Menu, Moon, Sun } from "lucide-react";
+
+var __jsx = React.createElement;
+function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
 
 // ─── FONTS ────────────────────────────────────────────────────────────────────
 var fontLink = document.createElement("link");
@@ -10893,7 +10892,7 @@ function renderSection(id, rk) {
 }
 
 // ─── APP ──────────────────────────────────────────────────────────────────────
-export default function App() {
+function App() {
   var _useState66 = useState(false),
     onboarded = _useState66[0],
     setOnboarded = _useState66[1];
@@ -11441,7 +11440,7 @@ export default function App() {
   })));
 }
 
-    createRoot(document.getElementById('root')).render(React.createElement(App));
+createRoot(document.getElementById('root')).render(React.createElement(App));
   </script>
 </body>
 </html>
