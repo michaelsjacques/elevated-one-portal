@@ -1,38 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ElevatedOne Portal</title>
-  <script type="importmap">{"imports":{"react":"https://esm.sh/react@18","react/jsx-runtime":"https://esm.sh/react@18/jsx-runtime","react-dom":"https://esm.sh/react-dom@18","react-dom/client":"https://esm.sh/react-dom@18/client","recharts":"https://esm.sh/recharts@2?deps=react@18,react-dom@18","lucide-react":"https://esm.sh/lucide-react@0.263.1?deps=react@18","@babel/runtime/helpers/toConsumableArray":"https://esm.sh/@babel/runtime/helpers/toConsumableArray","@babel/runtime/helpers/defineProperty":"https://esm.sh/@babel/runtime/helpers/defineProperty","@babel/runtime/helpers/objectWithoutProperties":"https://esm.sh/@babel/runtime/helpers/objectWithoutProperties","@babel/runtime/helpers/objectWithoutPropertiesLoose":"https://esm.sh/@babel/runtime/helpers/objectWithoutPropertiesLoose","@babel/runtime/helpers/extends":"https://esm.sh/@babel/runtime/helpers/extends","@babel/runtime/helpers/slicedToArray":"https://esm.sh/@babel/runtime/helpers/slicedToArray","@babel/runtime/helpers/toArray":"https://esm.sh/@babel/runtime/helpers/toArray"}}</script>
-  <script src="https://unpkg.com/@babel/standalone@7.23.3/babel.min.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Elevated One Portal</title>
+<!-- UMD bundles: no importmaps, no module resolution needed -->
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/prop-types@15.8.1/prop-types.min.js"></script>
+<script src="https://unpkg.com/recharts@2.10.3/umd/Recharts.js"></script>
+<!-- lucide-react UMD expects global.react (lowercase) — shim it -->
+<script>window.react = window.React;</script>
+<script src="https://unpkg.com/lucide-react@0.344.0/dist/umd/lucide-react.js"></script>
+<script src="https://unpkg.com/@babel/standalone@7.23.3/babel.min.js"></script>
 </head>
-<body style="margin:0">
-  <div id="root"><div style="display:flex;align-items:center;justify-content:center;height:100vh;font-family:sans-serif;color:#999;font-size:14px">Compiling portal...</div></div>
-  <script type="text/babel" data-type="module" data-presets="react">
-import React from "react";
-import { createRoot as __createRoot } from "react-dom/client";
-import { useState, useRef, useEffect, useContext, createContext } from "react";
-import {
-  AreaChart, Area, BarChart, Bar, XAxis, YAxis, CartesianGrid,
-  Tooltip, ResponsiveContainer, LineChart, Line
-} from "recharts";
-import {
-  Search, Home, ChevronDown, ChevronRight, ChevronUp,
-  LayoutDashboard, Wrench, ShoppingBag, Activity, Bell,
-  FlaskConical, ClipboardList, BadgeCheck, Zap, Package,
-  CreditCard, RotateCcw, Building2, FileText, Hammer,
-  BookOpen, Send, Bot, User, X, Check, ArrowRight,
-  TrendingUp, TrendingDown, AlertTriangle, Leaf, Cpu,
-  BarChart2, Settings, LogOut, Plus, RefreshCw, Eye,
-  MessageSquare, Clock, DollarSign, Star, Shield, PanelRightClose, PanelRightOpen,
-  Download, Upload, Paperclip, CalendarDays, Banknote, Percent,
-  Calculator, Lightbulb, Wind, Droplets, LayoutGrid,
-  ExternalLink, Folder, FolderOpen, FilePlus, CheckCircle2, Circle,
-  SlidersHorizontal, Ruler, Thermometer, Gauge, Table2, MapPin, Menu,
-  Moon, Sun,
-  Users, CheckSquare, Briefcase, UserCheck
-} from "lucide-react";
+<body>
+<div id="root"><div style="display:flex;align-items:center;justify-content:center;height:100vh;font-family:sans-serif;color:#888">Loading portal...</div></div>
+<script type="text/babel" data-presets="react">/* --- globals from UMD bundles --- */
+const React = window.React;
+const { useState, useRef, useEffect, useContext, createContext } = React;
+const __createRoot = window.ReactDOM.createRoot;
+const { AreaChart, Area, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line } = window.Recharts;
+const { Search, Home, ChevronDown, ChevronRight, ChevronUp, LayoutDashboard, Wrench, ShoppingBag, Activity, Bell, FlaskConical, ClipboardList, BadgeCheck, Zap, Package, CreditCard, RotateCcw, Building2, FileText, Hammer, BookOpen, Send, Bot, User, X, Check, ArrowRight, TrendingUp, TrendingDown, AlertTriangle, Leaf, Cpu, BarChart2, Settings, LogOut, Plus, RefreshCw, Eye, MessageSquare, Clock, DollarSign, Star, Shield, PanelRightClose, PanelRightOpen, Download, Upload, Paperclip, CalendarDays, Banknote, Percent, Calculator, Lightbulb, Wind, Droplets, LayoutGrid, ExternalLink, Folder, FolderOpen, FilePlus, CheckCircle2, Circle, SlidersHorizontal, Ruler, Thermometer, Gauge, Table2, MapPin, Menu, Moon, Sun, Users, CheckSquare, Briefcase, UserCheck } = window.LucideReact;
+/* --- end globals --- */
 
 // ─── FONTS ────────────────────────────────────────────────────────────────────
 const fontLink = document.createElement("link");
@@ -60,6 +50,7 @@ const T = {
   textPrimary: "#111827",
   textSecondary: "#6B7280",
   textMuted: "#9CA3AF",
+  text: "#111827",
   navy: "#1E3A5F",
 };
 
@@ -441,10 +432,21 @@ const css = `
   .staff-role-card:hover,.staff-role-card.selected { border-color:${T.accent}; background:${T.accent}10; }
   .staff-role-title { font-size:14px; font-weight:600; margin-bottom:2px; }
   .staff-role-desc  { font-size:12px; color:${T.textMuted}; }
-  .assess-phase-bar { display:flex; gap:0; margin-bottom:20px; border-radius:8px; overflow:hidden; }
-  .assess-phase-step { flex:1; text-align:center; padding:8px; font-size:12px; border-bottom:2px solid ${T.border}; color:${T.textMuted}; background:${T.surface}; }
-  .assess-phase-step.active { border-color:${T.accent}; color:${T.accent}; font-weight:600; background:${T.accent}10; }
-  .assess-phase-step.done   { border-color:${T.accent}40; color:${T.textMuted}; }
+  .assess-accordion { display:flex; flex-direction:column; }
+  .assess-accordion-item { border-bottom:1px solid ${T.border}; }
+  .assess-accordion-trigger { display:flex; width:100%; align-items:center; justify-content:space-between; padding:16px 0; background:none; border:none; cursor:pointer; color:${T.text}; font-family:'Roboto',sans-serif; }
+  .assess-accordion-trigger:hover { opacity:0.85; }
+  .assess-accordion-title { display:flex; align-items:center; gap:12px; }
+  .assess-status-badge { display:inline-flex; align-items:center; border-radius:6px; padding:2px 10px; font-size:11px; font-weight:600; font-family:'IBM Plex Mono',monospace; }
+  .assess-status-badge.not-started { background:${T.surface}; color:${T.textMuted}; border:1px solid ${T.border}; }
+  .assess-status-badge.in-progress { background:#f59e0b18; color:#f59e0b; border:1px solid #f59e0b40; }
+  .assess-status-badge.complete { background:#10b98118; color:#10b981; border:1px solid #10b98140; }
+  .assess-step-nav { border-radius:10px; border:1px solid ${T.border}; padding:12px; display:flex; flex-direction:column; gap:4px; background:${T.surface}; }
+  .assess-step-btn { display:flex; width:100%; align-items:center; gap:10px; border-radius:8px; padding:8px 10px; text-align:left; transition:background 0.15s; background:none; border:none; cursor:pointer; color:${T.text}; font-family:'Roboto',sans-serif; }
+  .assess-step-btn:hover { background:${T.bg}; }
+  .assess-step-btn.active { background:${T.bg}; }
+  .assess-step-num { display:flex; height:24px; width:24px; flex-shrink:0; align-items:center; justify-content:center; border-radius:50%; font-size:13px; font-weight:600; background:${T.bg}; color:${T.textMuted}; }
+  .assess-step-num.complete { background:#10b981; color:#fff; }
   .login-mode-toggle { display:flex; background:${T.surface}; border-radius:20px; padding:3px; margin-bottom:20px; border:1px solid ${T.border}; }
   .login-mode-btn { flex:1; padding:6px 16px; border-radius:18px; border:none; cursor:pointer; font-size:13px; font-weight:500; background:transparent; color:${T.textMuted}; transition:all 0.15s; }
   .login-mode-btn.active { background:${T.accent}; color:#fff; font-weight:600; }
@@ -513,12 +515,65 @@ const STAFF_SCHEDULE = [
   { date: "2026-03-10", client: "Peak Harvest Co.",    type: "Follow-up",        status: "This Week" },
   { date: "2026-03-12", client: "GreenLeaf Farms",     type: "Routine Check",    status: "This Week" },
 ];
-const ASSESSMENT_ROOMS = ["Veg Room A", "Veg Room B", "Flower Room 1", "Flower Room 2", "Clone Room", "Dry Room", "Mechanical Room"];
-const ASSESSMENT_CHECKLIST = [
-  "HVAC operation", "Lighting schedule/intensity", "CO₂ levels", "VPD (temp + RH)",
-  "Irrigation/fertigation", "Pest/disease scouting", "Controller settings",
-  "Drain-to-waste EC/pH", "Room cleanliness", "Equipment condition",
-];
+const ROOM_TYPES = ["Fertigation Room", "Clone Room", "Dry Room", "Trim Room"];
+const ROOM_CHECKLISTS = {
+  "Fertigation Room": [
+    "Source water pH (target 5.8–6.2)",
+    "Source water EC / TDS",
+    "Pre-filter condition",
+    "Post-filter / RO membrane condition",
+    "Injection system calibration",
+    "Dosing pump output verified",
+    "Nutrient A+B tank levels",
+    "pH Up/Down tank levels",
+    "Controller set points vs actual",
+    "Tank cleanliness / no algae",
+    "Drain line clear / no blockage",
+    "Leak check — fittings & lines",
+  ],
+  "Clone Room": [
+    "Propagation media moisture level",
+    "Tray sanitation / cleanliness",
+    "Insert condition and seating",
+    "Clones per tray vs target count",
+    "Root development check",
+    "Misting frequency / schedule correct",
+    "Dome humidity & temperature",
+    "Rack structural integrity",
+    "Rack spacing / adequate airflow",
+    "Lighting schedule and intensity",
+    "Pest / disease scouting",
+    "Room cleanliness",
+  ],
+  "Dry Room": [
+    "Temperature set point vs actual",
+    "RH set point vs actual",
+    "Airflow / circulation adequate",
+    "Hang lines / racks in good condition",
+    "Product load within capacity",
+    "Dehumidifier output check",
+    "No mold or contamination signs",
+    "Light seal intact / room dark",
+    "Entry/exit protocol compliance",
+    "Cure container condition (if in cure)",
+    "Room cleanliness",
+    "Equipment condition",
+  ],
+  "Trim Room": [
+    "Workstation cleanliness",
+    "Trim equipment sanitized",
+    "Trim machine calibration",
+    "Waste container managed / not overflowing",
+    "Packaging materials stocked",
+    "Scale calibration verified",
+    "PPE compliance",
+    "Air filtration / odor control functioning",
+    "Product intake log up to date",
+    "Output batch records complete",
+    "Room cleanliness",
+    "Equipment condition",
+  ],
+};
 const EQUIPMENT_CATEGORIES = ["HVAC & Climate", "Lighting", "Irrigation", "CO₂ Systems", "Sensors & Controllers", "Fertigation"];
 const AE_PIPELINE = [
   { client: "High Desert Grows", stage: "Proposal Sent",    value: "$24,500", lastTouch: "3 days ago" },
@@ -4389,24 +4444,51 @@ function StaffAdvisorDashboard() {
 
 function StaffFieldAssessment() {
   const { staffClient, staffLocation, staffUser, staffRole } = useContext(AppCtx);
-  const [phase, setPhase] = useState("setup"); // setup | walkthrough | summary
+  const [openSection, setOpenSection] = useState("setup");
   const [assessType, setAssessType] = useState("Routine");
   const [assessDate, setAssessDate] = useState("2026-03-07");
   const [setupNotes, setSetupNotes] = useState("");
-  const [activeRoom, setActiveRoom] = useState(ASSESSMENT_ROOMS[0]);
+  const [activeRoom, setActiveRoom] = useState(ROOM_TYPES[0]);
   const [checked, setChecked] = useState({});
   const [roomNotes, setRoomNotes] = useState({});
   const [recs, setRecs] = useState([]);
   const [recProduct, setRecProduct] = useState("");
   const [recQty, setRecQty] = useState("");
   const [recReason, setRecReason] = useState("");
-  const [submitted, setSubmitted] = useState(false);
   const [assessComments, setAssessComments] = useState([]);
+  const [submitted, setSubmitted] = useState(false);
 
-  function toggleCheck(room, item) {
-    const key = `${room}::${item}`;
-    setChecked(c => ({ ...c, [key]: !c[key] }));
+  const SECTIONS = [
+    { id: "setup",           label: "Assessment Setup" },
+    { id: "walkthrough",     label: "Room Walkthrough" },
+    { id: "recommendations", label: "Product Recommendations" },
+    { id: "summary",         label: "Summary & Submit" },
+  ];
+
+  function sectionStatus(id) {
+    if (id === "setup") {
+      if (staffClient && assessDate && assessType) return "complete";
+      if (setupNotes || assessType !== "Routine") return "in-progress";
+      return "not-started";
+    }
+    if (id === "walkthrough") {
+      const n = Object.keys(checked).length + Object.values(roomNotes).filter(Boolean).length;
+      if (n > 5) return "complete";
+      if (n > 0) return "in-progress";
+      return "not-started";
+    }
+    if (id === "recommendations") return recs.length > 0 ? "complete" : "not-started";
+    if (id === "summary") return submitted ? "complete" : "not-started";
+    return "not-started";
   }
+
+  function StatusBadge({ status }) {
+    const label = { "not-started": "Not Started", "in-progress": "In Progress", "complete": "Complete" }[status];
+    return <span className={`assess-status-badge ${status}`}>{label}</span>;
+  }
+
+  function toggle(id) { setOpenSection(s => s === id ? null : id); }
+
   function addRec() {
     if (!recProduct.trim()) return;
     setRecs(r => [...r, { product: recProduct, qty: recQty, reason: recReason, room: activeRoom }]);
@@ -4418,149 +4500,227 @@ function StaffFieldAssessment() {
       <CheckCircle2 size={48} color="#10b981" />
       <div className="page-title" style={{ textAlign: "center" }}>Assessment Submitted!</div>
       <div style={{ color: T.textMuted, fontSize: 13 }}>Report saved for {staffClient || "client"} — {staffLocation || "location"}</div>
-      <button className="btn-primary" onClick={() => { setPhase("setup"); setChecked({}); setRoomNotes({}); setRecs([]); setSubmitted(false); }}>Start New Assessment</button>
+      <button className="btn-primary" onClick={() => { setOpenSection("setup"); setChecked({}); setRoomNotes({}); setRecs([]); setAssessComments([]); setSubmitted(false); }}>Start New Assessment</button>
     </div>
   );
 
   return (
     <div className="content-scroll">
-      <div className="page-title" style={{ marginBottom: 16 }}>Field Assessment</div>
-      <div className="assess-phase-bar">
-        {["setup", "walkthrough", "summary"].map((p, i) => (
-          <div key={p} className={`assess-phase-step${phase === p ? " active" : phase === "walkthrough" && p === "setup" ? " done" : phase === "summary" && p !== "summary" ? " done" : ""}`}>
-            {i + 1}. {p.charAt(0).toUpperCase() + p.slice(1)}
-          </div>
-        ))}
-      </div>
+      <div className="page-title" style={{ marginBottom: 24 }}>Field Assessment</div>
+      <div style={{ display: "flex", gap: 32, alignItems: "flex-start" }}>
 
-      {phase === "setup" && (
-        <div className="card" style={{ maxWidth: 520 }}>
-          <div className="card-label">Setup</div>
-          <ClientLocationPicker />
-          <div style={{ marginBottom: 12 }}>
-            <label style={{ fontSize: 12, color: T.textMuted, display: "block", marginBottom: 4 }}>Assessment Type</label>
-            {["Routine", "Issue-Focused", "Post-Install"].map(t => (
-              <button key={t} style={{ marginRight: 8, marginBottom: 8, padding: "5px 14px", borderRadius: 20, border: `1px solid ${assessType === t ? T.accent : T.border}`, background: assessType === t ? `${T.accent}18` : T.surface, color: assessType === t ? T.accent : T.textMuted, cursor: "pointer", fontSize: 12 }} onClick={() => setAssessType(t)}>{t}</button>
-            ))}
-          </div>
-          <div style={{ marginBottom: 12 }}>
-            <label style={{ fontSize: 12, color: T.textMuted, display: "block", marginBottom: 4 }}>Date</label>
-            <input className="reg-input" type="date" value={assessDate} onChange={e => setAssessDate(e.target.value)} style={{ maxWidth: 200 }} />
-          </div>
-          <div style={{ marginBottom: 16 }}>
-            <label style={{ fontSize: 12, color: T.textMuted, display: "block", marginBottom: 4 }}>Pre-Visit Notes</label>
-            <textarea value={setupNotes} onChange={e => setSetupNotes(e.target.value)} placeholder="Any known issues or focus areas…" rows={3} style={{ width: "100%", background: T.surface, border: `1px solid ${T.border}`, borderRadius: 8, padding: "8px 12px", color: T.text, fontSize: 13, resize: "vertical", boxSizing: "border-box" }} />
-          </div>
-          <button className="btn-primary" onClick={() => setPhase("walkthrough")} disabled={!staffClient}>Begin Assessment</button>
-          {!staffClient && <div style={{ fontSize: 12, color: "#f59e0b", marginTop: 8 }}>Select a client and location to begin.</div>}
-        </div>
-      )}
+        {/* ── Accordion ── */}
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <div className="assess-accordion">
 
-      {phase === "walkthrough" && (
-        <div>
-          <StaffContextBanner />
-          <div style={{ display: "flex" }}>
-            <div className="room-sidebar">
-              <div style={{ fontSize: 11, color: T.textMuted, fontFamily: "'IBM Plex Mono'", textTransform: "uppercase", letterSpacing: "0.5px", marginBottom: 8, paddingLeft: 12 }}>Rooms</div>
-              {ASSESSMENT_ROOMS.map(r => (
-                <button key={r} className={`room-btn${activeRoom === r ? " active" : ""}`} onClick={() => setActiveRoom(r)}>{r}</button>
-              ))}
-            </div>
-            <div style={{ flex: 1 }}>
-              <div className="card" style={{ marginBottom: 14 }}>
-                <div className="card-label">{activeRoom} — Checklist</div>
-                {ASSESSMENT_CHECKLIST.map(item => {
-                  const key = `${activeRoom}::${item}`;
-                  const isChecked = !!checked[key];
-                  return (
-                    <div key={item} className="checklist-item" onClick={() => toggleCheck(activeRoom, item)} style={{ cursor: "pointer" }}>
-                      <div className={`check-box${isChecked ? " checked" : ""}`}>
-                        {isChecked && <Check size={12} color="#fff" />}
+            {/* 1. Assessment Setup */}
+            <div className="assess-accordion-item">
+              <button className="assess-accordion-trigger" onClick={() => toggle("setup")}>
+                <div className="assess-accordion-title">
+                  <span style={{ fontSize: 17, fontWeight: 600 }}>Assessment Setup</span>
+                  <StatusBadge status={sectionStatus("setup")} />
+                </div>
+                <ChevronDown size={16} color={T.textMuted} style={{ transition: "transform 0.2s", transform: openSection === "setup" ? "rotate(180deg)" : "none" }} />
+              </button>
+              {openSection === "setup" && (
+                <div className="assess-accordion-content" style={{ paddingBottom: 20 }}>
+                  <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+                    <ClientLocationPicker />
+                    <div>
+                      <label style={{ fontSize: 13, fontWeight: 500, display: "block", marginBottom: 8, color: T.text }}>Assessment Type</label>
+                      <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+                        {["Routine", "Issue-Focused", "Post-Install"].map(t => (
+                          <button key={t} style={{ padding: "5px 14px", borderRadius: 20, border: `1px solid ${assessType === t ? T.accent : T.border}`, background: assessType === t ? `${T.accent}18` : T.surface, color: assessType === t ? T.accent : T.textMuted, cursor: "pointer", fontSize: 12, fontFamily: "'Roboto'" }} onClick={() => setAssessType(t)}>{t}</button>
+                        ))}
                       </div>
-                      <span style={{ color: isChecked ? T.text : T.textMuted }}>{item}</span>
                     </div>
-                  );
-                })}
-                <div style={{ marginTop: 12 }}>
-                  <label style={{ fontSize: 12, color: T.textMuted, display: "block", marginBottom: 4 }}>Room Notes</label>
-                  <textarea
-                    value={roomNotes[activeRoom] || ""}
-                    onChange={e => setRoomNotes(n => ({ ...n, [activeRoom]: e.target.value }))}
-                    placeholder="Observations for this room…"
-                    rows={2}
-                    style={{ width: "100%", background: T.surface, border: `1px solid ${T.border}`, borderRadius: 8, padding: "8px 12px", color: T.text, fontSize: 13, resize: "vertical", boxSizing: "border-box" }}
-                  />
-                </div>
-              </div>
-              <div className="card" style={{ marginBottom: 14 }}>
-                <div className="card-label">Product Recommendations</div>
-                <div style={{ display: "flex", gap: 8, marginBottom: 10, flexWrap: "wrap" }}>
-                  <input value={recProduct} onChange={e => setRecProduct(e.target.value)} placeholder="Product name" style={{ flex: 2, minWidth: 120, padding: "6px 10px", borderRadius: 8, border: `1px solid ${T.border}`, background: T.surface, color: T.text, fontSize: 13 }} />
-                  <input value={recQty} onChange={e => setRecQty(e.target.value)} placeholder="Qty" style={{ flex: 1, minWidth: 60, padding: "6px 10px", borderRadius: 8, border: `1px solid ${T.border}`, background: T.surface, color: T.text, fontSize: 13 }} />
-                  <input value={recReason} onChange={e => setRecReason(e.target.value)} placeholder="Reason" style={{ flex: 3, minWidth: 120, padding: "6px 10px", borderRadius: 8, border: `1px solid ${T.border}`, background: T.surface, color: T.text, fontSize: 13 }} />
-                  <button className="btn-primary btn-sm" onClick={addRec}>+ Add</button>
-                </div>
-                {recs.length > 0 && recs.map((r, i) => (
-                  <div key={i} style={{ fontSize: 12, padding: "6px 0", borderBottom: `1px solid ${T.border}40`, display: "flex", gap: 10 }}>
-                    <span style={{ fontWeight: 600 }}>{r.product}</span>
-                    {r.qty && <span style={{ color: T.textMuted }}>×{r.qty}</span>}
-                    {r.reason && <span style={{ color: T.textMuted }}>— {r.reason}</span>}
-                    <span style={{ color: T.accent, fontSize: 11 }}>[{r.room}]</span>
+                    <div>
+                      <label style={{ fontSize: 13, fontWeight: 500, display: "block", marginBottom: 8, color: T.text }}>Date</label>
+                      <input className="reg-input" type="date" value={assessDate} onChange={e => setAssessDate(e.target.value)} style={{ maxWidth: 200 }} />
+                    </div>
+                    <div>
+                      <label style={{ fontSize: 13, fontWeight: 500, display: "block", marginBottom: 8, color: T.text }}>Pre-Visit Notes</label>
+                      <textarea value={setupNotes} onChange={e => setSetupNotes(e.target.value)} placeholder="Any known issues or focus areas…" rows={3} style={{ width: "100%", background: T.surface, border: `1px solid ${T.border}`, borderRadius: 8, padding: "8px 12px", color: T.text, fontSize: 13, resize: "vertical", boxSizing: "border-box", fontFamily: "'Roboto'" }} />
+                    </div>
+                    <div>
+                      <button className="btn-primary" onClick={() => toggle("walkthrough")} disabled={!staffClient}>
+                        Continue to Walkthrough <ArrowRight size={14} />
+                      </button>
+                      {!staffClient && <div style={{ fontSize: 12, color: "#f59e0b", marginTop: 8 }}>Select a client and location to continue.</div>}
+                    </div>
                   </div>
-                ))}
-              </div>
-              <button className="btn-primary" onClick={() => setPhase("summary")}>Complete Assessment →</button>
+                </div>
+              )}
             </div>
-          </div>
-        </div>
-      )}
 
-      {phase === "summary" && (
-        <div>
-          <StaffContextBanner />
-          <div className="card" style={{ marginBottom: 14 }}>
-            <div className="card-label">Assessment Summary — {assessType} · {assessDate}</div>
-            {ASSESSMENT_ROOMS.map(room => {
-              const roomChecked = ASSESSMENT_CHECKLIST.filter(item => checked[`${room}::${item}`]);
-              const notes = roomNotes[room];
-              const roomRecs = recs.filter(r => r.room === room);
-              if (!roomChecked.length && !notes && !roomRecs.length) return null;
-              return (
-                <div key={room} style={{ marginBottom: 16, borderBottom: `1px solid ${T.border}40`, paddingBottom: 12 }}>
-                  <div style={{ fontWeight: 600, fontSize: 13, marginBottom: 6 }}>{room}</div>
-                  {roomChecked.length > 0 && (
-                    <div style={{ marginBottom: 4 }}>
-                      {roomChecked.map((item, i) => (
-                        <span key={i} style={{ fontSize: 12, marginRight: 8, color: "#10b981" }}>✓ {item}</span>
+            {/* 2. Room Walkthrough */}
+            <div className="assess-accordion-item">
+              <button className="assess-accordion-trigger" onClick={() => toggle("walkthrough")}>
+                <div className="assess-accordion-title">
+                  <span style={{ fontSize: 17, fontWeight: 600 }}>Room Walkthrough</span>
+                  <StatusBadge status={sectionStatus("walkthrough")} />
+                </div>
+                <ChevronDown size={16} color={T.textMuted} style={{ transition: "transform 0.2s", transform: openSection === "walkthrough" ? "rotate(180deg)" : "none" }} />
+              </button>
+              {openSection === "walkthrough" && (
+                <div className="assess-accordion-content" style={{ paddingBottom: 20 }}>
+                  <StaffContextBanner />
+                  <div style={{ display: "flex", marginTop: 16 }}>
+                    <div className="room-sidebar">
+                      <div style={{ fontSize: 11, color: T.textMuted, fontFamily: "'IBM Plex Mono'", textTransform: "uppercase", letterSpacing: "0.5px", marginBottom: 8, paddingLeft: 12 }}>Rooms</div>
+                      {ROOM_TYPES.map(r => (
+                        <button key={r} className={`room-btn${activeRoom === r ? " active" : ""}`} onClick={() => setActiveRoom(r)}>
+                          {r}
+                          {Object.keys(checked).some(k => k.startsWith(r + "::")) && (
+                            <Check size={10} color="#10b981" style={{ marginLeft: 4 }} />
+                          )}
+                        </button>
+                      ))}
+                    </div>
+                    <div style={{ flex: 1 }}>
+                      <div style={{ marginBottom: 6, fontSize: 13, fontWeight: 600, color: T.text }}>{activeRoom} — Checklist</div>
+                      {(ROOM_CHECKLISTS[activeRoom] || []).map(item => {
+                        const key = `${activeRoom}::${item}`;
+                        const isChecked = !!checked[key];
+                        return (
+                          <div key={item} className="checklist-item" onClick={() => setChecked(c => ({ ...c, [key]: !c[key] }))} style={{ cursor: "pointer" }}>
+                            <div className={`check-box${isChecked ? " checked" : ""}`}>{isChecked && <Check size={12} color="#fff" />}</div>
+                            <span style={{ color: isChecked ? T.text : T.textMuted }}>{item}</span>
+                          </div>
+                        );
+                      })}
+                      <div style={{ marginTop: 12 }}>
+                        <label style={{ fontSize: 12, color: T.textMuted, display: "block", marginBottom: 4 }}>Room Notes</label>
+                        <textarea value={roomNotes[activeRoom] || ""} onChange={e => setRoomNotes(n => ({ ...n, [activeRoom]: e.target.value }))} placeholder="Observations for this room…" rows={2} style={{ width: "100%", background: T.surface, border: `1px solid ${T.border}`, borderRadius: 8, padding: "8px 12px", color: T.text, fontSize: 13, resize: "vertical", boxSizing: "border-box", fontFamily: "'Roboto'" }} />
+                      </div>
+                      <div style={{ marginTop: 12 }}>
+                        <button className="btn-primary" onClick={() => toggle("recommendations")}>
+                          Continue to Recommendations <ArrowRight size={14} />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* 3. Product Recommendations */}
+            <div className="assess-accordion-item">
+              <button className="assess-accordion-trigger" onClick={() => toggle("recommendations")}>
+                <div className="assess-accordion-title">
+                  <span style={{ fontSize: 17, fontWeight: 600 }}>Product Recommendations</span>
+                  <StatusBadge status={sectionStatus("recommendations")} />
+                </div>
+                <ChevronDown size={16} color={T.textMuted} style={{ transition: "transform 0.2s", transform: openSection === "recommendations" ? "rotate(180deg)" : "none" }} />
+              </button>
+              {openSection === "recommendations" && (
+                <div className="assess-accordion-content" style={{ paddingBottom: 20 }}>
+                  <div style={{ display: "flex", gap: 8, marginBottom: 12, flexWrap: "wrap" }}>
+                    <input value={recProduct} onChange={e => setRecProduct(e.target.value)} placeholder="Product name" style={{ flex: 2, minWidth: 120, padding: "6px 10px", borderRadius: 8, border: `1px solid ${T.border}`, background: T.surface, color: T.text, fontSize: 13 }} />
+                    <input value={recQty} onChange={e => setRecQty(e.target.value)} placeholder="Qty" style={{ flex: 1, minWidth: 60, padding: "6px 10px", borderRadius: 8, border: `1px solid ${T.border}`, background: T.surface, color: T.text, fontSize: 13 }} />
+                    <input value={recReason} onChange={e => setRecReason(e.target.value)} placeholder="Reason / room" style={{ flex: 3, minWidth: 120, padding: "6px 10px", borderRadius: 8, border: `1px solid ${T.border}`, background: T.surface, color: T.text, fontSize: 13 }} />
+                    <button className="btn-primary btn-sm" onClick={addRec}>+ Add</button>
+                  </div>
+                  {recs.length > 0 && (
+                    <div style={{ marginBottom: 16 }}>
+                      {recs.map((r, i) => (
+                        <div key={i} style={{ fontSize: 12, padding: "8px 0", borderBottom: `1px solid ${T.border}40`, display: "flex", gap: 10, alignItems: "center" }}>
+                          <span style={{ fontWeight: 600 }}>{r.product}</span>
+                          {r.qty && <span style={{ color: T.textMuted }}>×{r.qty}</span>}
+                          {r.reason && <span style={{ color: T.textMuted }}>— {r.reason}</span>}
+                          <span style={{ color: T.accent, fontSize: 11 }}>[{r.room}]</span>
+                        </div>
                       ))}
                     </div>
                   )}
-                  {notes && <div style={{ fontSize: 12, color: T.textMuted, marginBottom: 4 }}>Notes: {notes}</div>}
-                  {roomRecs.map((r, i) => (
-                    <div key={i} style={{ fontSize: 12, color: T.accent }}>→ Rec: {r.product} {r.qty ? `×${r.qty}` : ""} — {r.reason}</div>
-                  ))}
+                  {recs.length === 0 && <div style={{ color: T.textMuted, fontSize: 13, marginBottom: 16 }}>No recommendations added yet.</div>}
+                  <button className="btn-primary" onClick={() => toggle("summary")}>
+                    Continue to Summary <ArrowRight size={14} />
+                  </button>
                 </div>
-              );
-            })}
-            {recs.length === 0 && !Object.keys(checked).length && (
-              <div style={{ color: T.textMuted, fontSize: 13 }}>No items recorded.</div>
-            )}
-          </div>
-          <div className="card" style={{ marginBottom: 14 }}>
-            <div className="card-label" style={{ marginBottom: 8 }}>Assessment Comments</div>
-            <CommentThread
-              items={assessComments}
-              onAdd={text => setAssessComments(prev => [...prev, { from: staffUser?.name || "Staff", role: staffRole || "advisor", text, time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) }])}
-              staffUser={staffUser}
-              staffRole={staffRole}
-            />
-          </div>
-          <div style={{ display: "flex", gap: 10 }}>
-            <button className="btn-primary" onClick={() => setSubmitted(true)}>Submit Report</button>
-            <button className="btn-ghost" onClick={() => { setPhase("setup"); setChecked({}); setRoomNotes({}); setRecs([]); setAssessComments([]); }}>Start New</button>
+              )}
+            </div>
+
+            {/* 4. Summary & Submit */}
+            <div className="assess-accordion-item">
+              <button className="assess-accordion-trigger" onClick={() => toggle("summary")}>
+                <div className="assess-accordion-title">
+                  <span style={{ fontSize: 17, fontWeight: 600 }}>Summary & Submit</span>
+                  <StatusBadge status={sectionStatus("summary")} />
+                </div>
+                <ChevronDown size={16} color={T.textMuted} style={{ transition: "transform 0.2s", transform: openSection === "summary" ? "rotate(180deg)" : "none" }} />
+              </button>
+              {openSection === "summary" && (
+                <div className="assess-accordion-content" style={{ paddingBottom: 20 }}>
+                  <StaffContextBanner />
+                  <div style={{ marginTop: 16, marginBottom: 14 }}>
+                    <div style={{ fontWeight: 600, fontSize: 13, color: T.textMuted, marginBottom: 12, fontFamily: "'IBM Plex Mono'", textTransform: "uppercase", fontSize: 11, letterSpacing: "0.5px" }}>
+                      {assessType} · {assessDate}
+                    </div>
+                    {ROOM_TYPES.map(room => {
+                      const roomChecked = (ROOM_CHECKLISTS[room] || []).filter(item => checked[`${room}::${item}`]);
+                      const notes = roomNotes[room];
+                      const roomRecs = recs.filter(r => r.room === room);
+                      if (!roomChecked.length && !notes && !roomRecs.length) return null;
+                      return (
+                        <div key={room} style={{ marginBottom: 16, borderBottom: `1px solid ${T.border}40`, paddingBottom: 12 }}>
+                          <div style={{ fontWeight: 600, fontSize: 13, marginBottom: 6 }}>{room}</div>
+                          {roomChecked.length > 0 && (
+                            <div style={{ marginBottom: 6 }}>
+                              {roomChecked.map((item, i) => (
+                                <span key={i} style={{ fontSize: 12, marginRight: 8, color: "#10b981" }}>✓ {item}</span>
+                              ))}
+                            </div>
+                          )}
+                          {notes && <div style={{ fontSize: 12, color: T.textMuted, marginBottom: 4 }}>Notes: {notes}</div>}
+                          {roomRecs.map((r, i) => (
+                            <div key={i} style={{ fontSize: 12, color: T.accent }}>→ {r.product}{r.qty ? ` ×${r.qty}` : ""}{r.reason ? ` — ${r.reason}` : ""}</div>
+                          ))}
+                        </div>
+                      );
+                    })}
+                    {!Object.keys(checked).length && !recs.length && (
+                      <div style={{ color: T.textMuted, fontSize: 13, marginBottom: 12 }}>No items recorded — go back to complete the walkthrough.</div>
+                    )}
+                  </div>
+                  <div style={{ marginBottom: 16 }}>
+                    <div style={{ fontSize: 11, color: T.textMuted, fontFamily: "'IBM Plex Mono'", textTransform: "uppercase", letterSpacing: "0.5px", marginBottom: 8 }}>Assessment Comments</div>
+                    <CommentThread
+                      items={assessComments}
+                      onAdd={text => setAssessComments(prev => [...prev, { from: staffUser?.name || "Staff", role: staffRole || "advisor", text, time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) }])}
+                      staffUser={staffUser}
+                      staffRole={staffRole}
+                    />
+                  </div>
+                  <div style={{ display: "flex", gap: 10 }}>
+                    <button className="btn-primary" onClick={() => setSubmitted(true)}>Submit Report</button>
+                    <button className="btn-ghost" onClick={() => { setOpenSection("setup"); setChecked({}); setRoomNotes({}); setRecs([]); setAssessComments([]); }}>Start New</button>
+                  </div>
+                </div>
+              )}
+            </div>
+
           </div>
         </div>
-      )}
+
+        {/* ── Right step nav ── */}
+        <aside style={{ width: 220, flexShrink: 0, position: "sticky", top: 24 }}>
+          <div className="assess-step-nav">
+            {SECTIONS.map((s, i) => {
+              const status = sectionStatus(s.id);
+              return (
+                <button key={s.id} className={`assess-step-btn${openSection === s.id ? " active" : ""}`} onClick={() => toggle(s.id)}>
+                  <div className={`assess-step-num${status === "complete" ? " complete" : ""}`}>
+                    {status === "complete" ? <Check size={11} /> : i + 1}
+                  </div>
+                  <span style={{ fontSize: 13, fontWeight: 500 }}>{s.label}</span>
+                </button>
+              );
+            })}
+          </div>
+        </aside>
+
+      </div>
     </div>
   );
 }
@@ -5669,9 +5829,7 @@ function App() {
   );
 }
 
-// Mount App
 __createRoot(document.getElementById("root")).render(React.createElement(App));
-
-  </script>
+</script>
 </body>
 </html>
