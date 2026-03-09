@@ -3,13 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Elevated One Portal</title>
-<!-- UMD bundles: no importmaps, no module resolution needed -->
+<title>Elevated One — Client Portal</title>
 <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
 <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
 <script src="https://unpkg.com/prop-types@15.8.1/prop-types.min.js"></script>
 <script src="https://unpkg.com/recharts@2.10.3/umd/Recharts.js"></script>
-<!-- lucide-react UMD expects global.react (lowercase) — shim it -->
+<!-- lucide-react UMD expects global.react (lowercase) -->
 <script>window.react = window.React;</script>
 <script src="https://unpkg.com/lucide-react@0.344.0/dist/umd/lucide-react.js"></script>
 <script src="https://unpkg.com/@babel/standalone@7.23.3/babel.min.js"></script>
@@ -575,6 +574,50 @@ const ROOM_CHECKLISTS = {
   ],
 };
 const EQUIPMENT_CATEGORIES = ["HVAC & Climate", "Lighting", "Irrigation", "CO₂ Systems", "Sensors & Controllers", "Fertigation"];
+
+// ── METRC mock data (shaped to match real METRC API v2 response schemas) ─────
+const METRC_PLANTS_MOCK = [
+  { PlantTag: "1A4FF0300000022000000001", StrainName: "OG Kush",    GrowthPhase: "Flowering",  PlantBatchName: "Batch-2026-001", LocationName: "Fertigation Room", PlantedDate: "2026-01-15", PlantCount: 120 },
+  { PlantTag: "1A4FF0300000022000000002", StrainName: "Blue Dream", GrowthPhase: "Vegetative", PlantBatchName: "Batch-2026-002", LocationName: "Clone Room",       PlantedDate: "2026-02-10", PlantCount: 80  },
+  { PlantTag: "1A4FF0300000022000000003", StrainName: "Gelato #41", GrowthPhase: "Flowering",  PlantBatchName: "Batch-2026-003", LocationName: "Fertigation Room", PlantedDate: "2026-01-20", PlantCount: 95  },
+];
+const METRC_HARVESTS_MOCK = [
+  { Id: 1, Name: "Harvest-OGKush-Mar2026",   HarvestType: "WholePlant", StrainName: "OG Kush",    DryingLocationName: "Dry Room", HarvestStartDate: "2026-03-01", TotalWetWeight: 5200, TotalDryWeight: 1240, CurrentWeight: 1240, UnitOfWeightName: "Grams", LabTestingState: "TestPassed" },
+  { Id: 2, Name: "Harvest-BlueDream-Feb2026", HarvestType: "WholePlant", StrainName: "Blue Dream", DryingLocationName: "Dry Room", HarvestStartDate: "2026-02-20", TotalWetWeight: 4100, TotalDryWeight: 980,  CurrentWeight: 820,  UnitOfWeightName: "Grams", LabTestingState: "TestPassed" },
+];
+const METRC_PACKAGES_MOCK = [
+  { Label: "1A4FF030000002200000001", ProductName: "OG Kush Flower",    Quantity: 500,  UnitOfMeasureName: "Grams", PackageState: "Active", ProductCategoryName: "Flower", LabTestingState: "TestPassed",    ReceivedDateTime: "2026-03-05T00:00:00Z" },
+  { Label: "1A4FF030000002200000002", ProductName: "Blue Dream Trim",   Quantity: 1200, UnitOfMeasureName: "Grams", PackageState: "Active", ProductCategoryName: "Trim",   LabTestingState: "NotSubmitted",  ReceivedDateTime: "2026-03-07T00:00:00Z" },
+  { Label: "1A4FF030000002200000003", ProductName: "Gelato #41 Flower", Quantity: 350,  UnitOfMeasureName: "Grams", PackageState: "Active", ProductCategoryName: "Flower", LabTestingState: "SubmittedForTesting", ReceivedDateTime: "2026-03-06T00:00:00Z" },
+];
+const METRC_LAB_TESTS_MOCK = [
+  { PackageLabel: "1A4FF030000002200000001", LabTestTypeName: "Potency", LabFacilityName: "CannTest Labs", TestDate: "2026-03-04", OverallPassed: true,  Results: [{ LabTestResultTypeName: "THC", Quantity: 22.4 }, { LabTestResultTypeName: "CBD", Quantity: 0.8 }, { LabTestResultTypeName: "Terpenes", Quantity: 2.1 }] },
+  { PackageLabel: "1A4FF030000002200000002", LabTestTypeName: "Potency", LabFacilityName: "CannTest Labs", TestDate: "2026-03-05", OverallPassed: true,  Results: [{ LabTestResultTypeName: "THC", Quantity: 18.9 }, { LabTestResultTypeName: "CBD", Quantity: 1.2 }, { LabTestResultTypeName: "Terpenes", Quantity: 1.8 }] },
+];
+
+// ── AROYA mock data (shaped to match AROYA REST API response schemas) ─────────
+const AROYA_ROOMS_MOCK = [
+  { id: "room-fert-001",  name: "Fertigation Room", zone_count: 2, active: true },
+  { id: "room-clone-001", name: "Clone Room",        zone_count: 3, active: true },
+  { id: "room-dry-001",   name: "Dry Room",          zone_count: 1, active: true },
+  { id: "room-trim-001",  name: "Trim Room",         zone_count: 1, active: true },
+];
+const AROYA_CLIMATE_MOCK = {
+  "room-fert-001":  { temperature: 73.4, humidity: 65, co2: 1050, vpd: 0.92, timestamp: "2026-03-07T10:00:00Z", status: "ok"   },
+  "room-clone-001": { temperature: 76.1, humidity: 72, co2: 900,  vpd: 0.78, timestamp: "2026-03-07T10:00:00Z", status: "ok"   },
+  "room-dry-001":   { temperature: 65.0, humidity: 58, co2: 450,  vpd: 1.10, timestamp: "2026-03-07T10:00:00Z", status: "warn" },
+  "room-trim-001":  { temperature: 70.0, humidity: 50, co2: 600,  vpd: 1.05, timestamp: "2026-03-07T10:00:00Z", status: "ok"   },
+};
+const AROYA_SUBSTRATE_MOCK = {
+  "room-fert-001":  { vwc: 42, ec: 1.8, soil_temp: 72.0, timestamp: "2026-03-07T10:00:00Z" },
+  "room-clone-001": { vwc: 68, ec: 0.9, soil_temp: 74.5, timestamp: "2026-03-07T10:00:00Z" },
+};
+const AROYA_IRRIGATION_MOCK = {
+  "room-fert-001": [
+    { timestamp: "2026-03-07T06:00:00Z", volume_ml: 250, runoff_ml: 52, inflow_ec: 1.8, outflow_ec: 2.1, pH_in: 6.0, pH_out: 6.3 },
+    { timestamp: "2026-03-07T12:00:00Z", volume_ml: 240, runoff_ml: 48, inflow_ec: 1.8, outflow_ec: 2.0, pH_in: 5.9, pH_out: 6.2 },
+  ],
+};
 const AE_PIPELINE = [
   { client: "High Desert Grows", stage: "Proposal Sent",    value: "$24,500", lastTouch: "3 days ago" },
   { client: "Valley Bloom LLC",  stage: "Negotiation",      value: "$61,000", lastTouch: "Today" },
@@ -616,6 +659,67 @@ const STAFF_CHANNEL_INIT = [
   { id: 3, from: "Alex Rivera",  role: "advisor", text: "Sending it over now Casey. CO₂ issue is still active — Jordan flagged parts being ordered.", date: "2026-03-07", time: "9:15 AM" },
   { id: 4, from: "Jordan Kim",   role: "tech",    text: "Parts ETA 2 days. I'll schedule the install visit as soon as they arrive 👍", date: "2026-03-07", time: "9:20 AM" },
 ];
+
+// ── MetrcService — stubbed API layer (swap mock returns for live fetch when keys available) ──
+const MetrcService = {
+  _cfg: null,
+  init(cfg) { this._cfg = cfg; },
+  _base() { return `https://api-${(this._cfg?.state||"ca").toLowerCase()}.metrc.com`; },
+  _auth() { const {integratorKey="",userKey=""} = this._cfg||{}; return "Basic "+btoa(`${integratorKey}:${userKey}`); },
+  async getFacilities() {
+    if (this._cfg?.integratorKey) { /* return fetch(`${this._base()}/facilities/v2/`,{headers:{Authorization:this._auth()}}).then(r=>r.json()); */ }
+    return [{ Id:"fac-001", Name:"GreenLeaf Farms – Main", LicenseNumber:"C10-0000123-LIC", FacilityType:{Name:"Cultivator"} }];
+  },
+  async getPlants(facilityId) {
+    if (this._cfg?.integratorKey) { /* return fetch(`${this._base()}/plants/v2/?licenseNumber=${facilityId}`,{headers:{Authorization:this._auth()}}).then(r=>r.json()); */ }
+    return METRC_PLANTS_MOCK;
+  },
+  async getHarvests(facilityId) {
+    if (this._cfg?.integratorKey) { /* return fetch(`${this._base()}/harvests/v2/active?licenseNumber=${facilityId}`,{headers:{Authorization:this._auth()}}).then(r=>r.json()); */ }
+    return METRC_HARVESTS_MOCK;
+  },
+  async getPackages(facilityId) {
+    if (this._cfg?.integratorKey) { /* return fetch(`${this._base()}/packages/v2/active?licenseNumber=${facilityId}`,{headers:{Authorization:this._auth()}}).then(r=>r.json()); */ }
+    return METRC_PACKAGES_MOCK;
+  },
+  async getLabTests(packageLabel) {
+    if (this._cfg?.integratorKey) { /* return fetch(`${this._base()}/labtests/v1/results?packageLabel=${packageLabel}`,{headers:{Authorization:this._auth()}}).then(r=>r.json()); */ }
+    return METRC_LAB_TESTS_MOCK.filter(t=>t.PackageLabel===packageLabel);
+  },
+  async testConnection() {
+    if (!this._cfg?.integratorKey) return { ok:false, error:"No API key configured" };
+    // Live: const r=await fetch(`${this._base()}/facilities/v2/`,{headers:{Authorization:this._auth()}}); return {ok:r.ok,status:r.status};
+    return { ok:true, facilityCount:1 }; // mock — always succeeds when key is non-empty
+  },
+};
+
+// ── AroyaService — stubbed API layer (Bearer token, swap mocks for live fetch) ─
+const AroyaService = {
+  _cfg: null,
+  init(cfg) { this._cfg = cfg; },
+  _hdrs() { return { Authorization:`Bearer ${this._cfg?.apiKey||""}`, "Content-Type":"application/json" }; },
+  async getRooms() {
+    if (this._cfg?.apiKey) { /* return fetch("https://app.aroya.io/api/rooms/",{headers:this._hdrs()}).then(r=>r.json()); */ }
+    return AROYA_ROOMS_MOCK;
+  },
+  async getClimate(roomId) {
+    if (this._cfg?.apiKey) { /* return fetch(`https://app.aroya.io/api/rooms/${roomId}/climate/latest/`,{headers:this._hdrs()}).then(r=>r.json()); */ }
+    return AROYA_CLIMATE_MOCK[roomId] || null;
+  },
+  async getSubstrate(roomId) {
+    if (this._cfg?.apiKey) { /* return fetch(`https://app.aroya.io/api/rooms/${roomId}/substrate/latest/`,{headers:this._hdrs()}).then(r=>r.json()); */ }
+    return AROYA_SUBSTRATE_MOCK[roomId] || null;
+  },
+  async getIrrigationEvents(roomId) {
+    if (this._cfg?.apiKey) { /* return fetch(`https://app.aroya.io/api/rooms/${roomId}/irrigation/`,{headers:this._hdrs()}).then(r=>r.json()); */ }
+    return AROYA_IRRIGATION_MOCK[roomId] || [];
+  },
+  async testConnection() {
+    if (!this._cfg?.apiKey) return { ok:false, error:"No API key configured" };
+    // Live: const r=await fetch("https://app.aroya.io/api/validate/",{headers:this._hdrs()}); return {ok:r.ok,roomCount:...};
+    return { ok:true, roomCount:AROYA_ROOMS_MOCK.length }; // mock
+  },
+};
 
 // ─── COMPONENTS ───────────────────────────────────────────────────────────────
 const CustomTooltip = ({ active, payload, label }) => {
@@ -1037,6 +1141,13 @@ function DiagnosticsSection() {
   const [expanded, setExpanded] = useState(null);
   const [orderModal, setOrderModal] = useState(null); // null | "panel" | test-object
   const [orderDone, setOrderDone] = useState(false);
+  const [aroyaSub, setAroyaSub] = useState(null);
+  const [aroyaIrr, setAroyaIrr] = useState([]);
+
+  useEffect(() => {
+    AroyaService.getSubstrate("room-fert-001").then(d => setAroyaSub(d));
+    AroyaService.getIrrigationEvents("room-fert-001").then(d => setAroyaIrr(d || []));
+  }, []);
 
   const categories = [
     { id: "tissue", label: "Plant Tissue", icon: <Leaf size={14} /> },
@@ -1056,9 +1167,10 @@ function DiagnosticsSection() {
     { nutrient: "Manganese (Mn)", value: "58 ppm", target: "30–100 ppm", status: "good", note: null },
   ];
 
+  const lastIrr = aroyaIrr[aroyaIrr.length - 1];
   const waterData = [
-    { nutrient: "pH", value: "6.4", target: "5.8–6.2", status: "warn", note: "Slightly elevated — adjust with phosphoric acid pH Down. Also check pH probe calibration date (recal due)." },
-    { nutrient: "EC", value: "2.41 mS/cm", target: "2.2–2.8", status: "good", note: null },
+    { nutrient: "pH", value: lastIrr ? `${lastIrr.pH_in.toFixed(1)}` : "6.4", target: "5.8–6.2", status: "warn", note: "Slightly elevated — adjust with phosphoric acid pH Down. Also check pH probe calibration date (recal due).", aroya: true },
+    { nutrient: "EC", value: lastIrr ? `${lastIrr.inflow_ec.toFixed(2)} mS/cm` : "2.41 mS/cm", target: "2.2–2.8", status: "good", note: null, aroya: true },
     { nutrient: "Alkalinity", value: "185 ppm CaCO₃", target: "80–120 ppm", status: "critical", note: "High alkalinity is likely contributing to pH instability across reservoirs. Recommend RO system inspection and bicarbonate flush. Consider inline acid injection for ongoing pH stability." },
     { nutrient: "Sodium (Na)", value: "24 ppm", target: "<50 ppm", status: "good", note: null },
     { nutrient: "Chloride (Cl)", value: "38 ppm", target: "<75 ppm", status: "good", note: null },
@@ -1067,10 +1179,10 @@ function DiagnosticsSection() {
   ];
 
   const mediaData = [
-    { nutrient: "Root Zone EC (runoff)", value: "3.4 mS/cm", target: "2.8–3.5", status: "warn", note: "Near upper threshold — reduce irrigation frequency by 1 cycle per day to allow salt leaching. Monitor drain-to-waste ratio." },
-    { nutrient: "Root Zone pH (runoff)", value: "6.8", target: "5.5–6.5", status: "critical", note: "Above acceptable range — salt accumulation locking out micronutrients. Schedule substrate flush with plain water at 20% runoff for 3 consecutive days." },
-    { nutrient: "Substrate Moisture", value: "62%", target: "55–70%", status: "good", note: null },
-    { nutrient: "Substrate EC", value: "2.9 mS/cm", target: "2.5–3.5", status: "good", note: null },
+    { nutrient: "Root Zone EC (runoff)", value: lastIrr ? `${lastIrr.outflow_ec.toFixed(2)} mS/cm` : "3.4 mS/cm", target: "2.8–3.5", status: "warn", note: "Near upper threshold — reduce irrigation frequency by 1 cycle per day to allow salt leaching. Monitor drain-to-waste ratio.", aroya: true },
+    { nutrient: "Root Zone pH (runoff)", value: lastIrr ? `${lastIrr.pH_out.toFixed(1)}` : "6.8", target: "5.5–6.5", status: "critical", note: "Above acceptable range — salt accumulation locking out micronutrients. Schedule substrate flush with plain water at 20% runoff for 3 consecutive days.", aroya: true },
+    { nutrient: "Substrate Moisture (VWC)", value: aroyaSub ? `${aroyaSub.vwc}%` : "62%", target: "55–70%", status: "good", note: null, aroya: true },
+    { nutrient: "Substrate EC", value: aroyaSub ? `${aroyaSub.ec.toFixed(1)} mS/cm` : "2.9 mS/cm", target: "2.5–3.5", status: "good", note: null, aroya: true },
     { nutrient: "Bulk Density", value: "0.38 g/cm³", target: "0.3–0.5", status: "good", note: null },
   ];
 
@@ -1147,7 +1259,7 @@ function DiagnosticsSection() {
             <div style={{ padding: "12px 18px", display: "flex", gap: 14, alignItems: "center", cursor: row.note ? "pointer" : "default", background: expanded === i ? T.bg : "transparent" }}
               onClick={() => row.note && setExpanded(expanded === i ? null : i)}>
               <div style={{ width: 8, height: 8, borderRadius: "50%", background: sc(row.status), flexShrink: 0 }} />
-              <div style={{ flex: 1, fontWeight: 500, fontSize: 13 }}>{row.nutrient}</div>
+              <div style={{ flex: 1, fontWeight: 500, fontSize: 13, display: "flex", alignItems: "center" }}>{row.nutrient}{row.aroya && <SourceBadge source="AROYA" />}</div>
               <div style={{ fontFamily: "'IBM Plex Mono'", fontSize: 13, fontWeight: 600, color: T.textPrimary, minWidth: 100, textAlign: "right" }}>{row.value}</div>
               <div style={{ fontSize: 11, color: T.textMuted, minWidth: 110, textAlign: "right" }}>Target: {row.target}</div>
               <span style={{ fontSize: 11, padding: "3px 10px", borderRadius: 5, background: sb(row.status), color: sc(row.status), fontWeight: 600, minWidth: 72, textAlign: "center" }}>{sl(row.status)}</span>
@@ -1260,6 +1372,18 @@ function AssessmentsSection() {
   const [notesOpen, setNotesOpen] = useState(true);
   const [envModal, setEnvModal] = useState(null);   // selected env variable object
   const [exportModal, setExportModal] = useState(false);
+  const [aroyaClimate, setAroyaClimate] = useState({});
+
+  // Map assessment room IDs to AROYA room IDs
+  const AROYA_MAP = { veg: "room-fert-001", flower_a: "room-fert-001", flower_b: "room-fert-001", wet: "room-dry-001" };
+  // Var labels sourced from AROYA
+  const AROYA_SOURCED = ["Temperature", "Humidity (RH)", "VPD", "CO₂", "Feed EC", "Canopy Temp"];
+
+  useEffect(() => {
+    const ids = [...new Set(Object.values(AROYA_MAP))];
+    Promise.all(ids.map(id => AroyaService.getClimate(id).then(d => [id, d])))
+      .then(pairs => setAroyaClimate(Object.fromEntries(pairs)));
+  }, []);
 
   const rooms = [
     {
@@ -1385,9 +1509,10 @@ function AssessmentsSection() {
               <div key={i} onClick={() => setEnvModal(v)} style={{ background: T.surface, border: `1px solid ${T.border}`, borderLeft: `3px solid ${stColor(v.status)}`, borderRadius: 10, padding: "14px 16px", cursor: "pointer", transition: "box-shadow 0.15s" }}
                 onMouseEnter={e => e.currentTarget.style.boxShadow = "0 4px 12px rgba(0,0,0,0.08)"} onMouseLeave={e => e.currentTarget.style.boxShadow = "none"}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: 6, color: T.textSecondary }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 6, color: T.textSecondary, flexWrap: "wrap" }}>
                     {envIcon(v.icon)}
                     <span style={{ fontSize: 11, fontWeight: 500 }}>{v.label}</span>
+                    {AROYA_SOURCED.includes(v.label) && <SourceBadge source="AROYA" />}
                   </div>
                   {v.trend !== 0 && (v.trend > 0
                     ? <TrendingUp size={12} color={v.status !== "good" ? stColor(v.status) : T.textMuted} />
@@ -4269,34 +4394,38 @@ const STAFF_HOME = { advisor: "sa-dashboard", tech: "st-dashboard", ae: "ae-dash
 
 const STAFF_NAV = {
   advisor: [
-    { id: "sa-dashboard",    label: "Dashboard",       icon: <Home size={15} /> },
-    { id: "sa-field-assess", label: "Field Assessment", icon: <ClipboardList size={15} /> },
-    { id: "sa-red-flags",    label: "Red Flags",        icon: <AlertTriangle size={15} /> },
-    { id: "staff-hub",       label: "Client Hub",       icon: <Users size={15} /> },
-    { id: "staff-chat",      label: "Team Chat",        icon: <MessageSquare size={15} /> },
+    { id: "sa-dashboard",      label: "Dashboard",       icon: <Home size={15} /> },
+    { id: "sa-field-assess",   label: "Field Assessment", icon: <ClipboardList size={15} /> },
+    { id: "sa-red-flags",      label: "Red Flags",        icon: <AlertTriangle size={15} /> },
+    { id: "staff-hub",         label: "Client Hub",       icon: <Users size={15} /> },
+    { id: "staff-chat",        label: "Team Chat",        icon: <MessageSquare size={15} /> },
+    { id: "staff-integrations", label: "Integrations",   icon: <Zap size={15} /> },
   ],
   tech: [
-    { id: "st-dashboard",  label: "Dashboard",       icon: <Home size={15} /> },
-    { id: "st-equipment",  label: "Equipment Setup",  icon: <Settings size={15} /> },
-    { id: "st-schedule",   label: "Service Schedule", icon: <CalendarDays size={15} /> },
-    { id: "staff-hub",     label: "Client Hub",       icon: <Users size={15} /> },
-    { id: "staff-chat",    label: "Team Chat",        icon: <MessageSquare size={15} /> },
+    { id: "st-dashboard",      label: "Dashboard",       icon: <Home size={15} /> },
+    { id: "st-equipment",      label: "Equipment Setup",  icon: <Settings size={15} /> },
+    { id: "st-schedule",       label: "Service Schedule", icon: <CalendarDays size={15} /> },
+    { id: "staff-hub",         label: "Client Hub",       icon: <Users size={15} /> },
+    { id: "staff-chat",        label: "Team Chat",        icon: <MessageSquare size={15} /> },
+    { id: "staff-integrations", label: "Integrations",   icon: <Zap size={15} /> },
   ],
   ae: [
-    { id: "ae-dashboard",   label: "Dashboard",   icon: <Home size={15} /> },
-    { id: "ae-clients",     label: "My Clients",  icon: <Users size={15} /> },
-    { id: "ae-pipeline",    label: "Pipeline",    icon: <TrendingUp size={15} /> },
-    { id: "ae-assessments", label: "Assessments", icon: <ClipboardList size={15} /> },
-    { id: "staff-hub",      label: "Client Hub",  icon: <Briefcase size={15} /> },
-    { id: "staff-chat",     label: "Team Chat",   icon: <MessageSquare size={15} /> },
+    { id: "ae-dashboard",      label: "Dashboard",   icon: <Home size={15} /> },
+    { id: "ae-clients",        label: "My Clients",  icon: <Users size={15} /> },
+    { id: "ae-pipeline",       label: "Pipeline",    icon: <TrendingUp size={15} /> },
+    { id: "ae-assessments",    label: "Assessments", icon: <ClipboardList size={15} /> },
+    { id: "staff-hub",         label: "Client Hub",  icon: <Briefcase size={15} /> },
+    { id: "staff-chat",        label: "Team Chat",   icon: <MessageSquare size={15} /> },
+    { id: "staff-integrations", label: "Integrations", icon: <Zap size={15} /> },
   ],
   rm: [
-    { id: "rm-dashboard",   label: "Dashboard",        icon: <Home size={15} /> },
-    { id: "rm-performance", label: "Team Performance", icon: <TrendingUp size={15} /> },
-    { id: "rm-financing",   label: "Financing",        icon: <DollarSign size={15} /> },
-    { id: "rm-team",        label: "My Team",          icon: <Users size={15} /> },
-    { id: "staff-hub",      label: "Client Hub",       icon: <Briefcase size={15} /> },
-    { id: "staff-chat",     label: "Team Chat",        icon: <MessageSquare size={15} /> },
+    { id: "rm-dashboard",      label: "Dashboard",        icon: <Home size={15} /> },
+    { id: "rm-performance",    label: "Team Performance", icon: <TrendingUp size={15} /> },
+    { id: "rm-financing",      label: "Financing",        icon: <DollarSign size={15} /> },
+    { id: "rm-team",           label: "My Team",          icon: <Users size={15} /> },
+    { id: "staff-hub",         label: "Client Hub",       icon: <Briefcase size={15} /> },
+    { id: "staff-chat",        label: "Team Chat",        icon: <MessageSquare size={15} /> },
+    { id: "staff-integrations", label: "Integrations",   icon: <Zap size={15} /> },
   ],
 };
 
@@ -4315,8 +4444,9 @@ const STAFF_BREADCRUMBS = {
   "rm-performance":  ["Staff", "Team Performance"],
   "rm-financing":    ["Staff", "Financing"],
   "rm-team":         ["Staff", "My Team"],
-  "staff-hub":       ["Staff", "Client Hub"],
-  "staff-chat":      ["Staff", "Team Chat"],
+  "staff-hub":          ["Staff", "Client Hub"],
+  "staff-chat":         ["Staff", "Team Chat"],
+  "staff-integrations": ["Staff", "Integrations"],
 };
 
 // ─── SHARED STAFF COMPONENTS ──────────────────────────────────────────────────
@@ -4389,6 +4519,211 @@ function StaffStatCard({ label, value, sub, color }) {
 }
 
 // ─── CULTIVATION ADVISOR SECTIONS ─────────────────────────────────────────────
+/* ── SourceBadge — shows which API a data point comes from ── */
+function SourceBadge({ source }) {
+  const cfg = {
+    METRC: { bg: "#10b98118", color: "#059669" },
+    AROYA: { bg: "#3b82f618", color: "#2563eb" },
+  }[source] || { bg: "#6b728018", color: "#6b7280" };
+  return (
+    <span style={{ fontSize: 9, padding: "1px 5px", borderRadius: 4, background: cfg.bg, color: cfg.color, fontFamily: "'IBM Plex Mono'", letterSpacing: "0.3px", fontWeight: 700, marginLeft: 5, verticalAlign: "middle" }}>
+      {source}
+    </span>
+  );
+}
+
+/* ── StaffIntegrationsSection — METRC + AROYA API key config ── */
+function StaffIntegrationsSection() {
+  const { apiConfig, setApiConfig } = useContext(AppCtx);
+  const [tab, setTab] = useState("metrc");
+  const [metrcStatus, setMetrcStatus] = useState(null); // null | {ok,msg}
+  const [aroyaStatus, setAroyaStatus] = useState(null);
+  const [showMetrcKey1, setShowMetrcKey1] = useState(false);
+  const [showMetrcKey2, setShowMetrcKey2] = useState(false);
+  const [showAroyaKey, setShowAroyaKey] = useState(false);
+  const [testing, setTesting] = useState(false);
+
+  const metrc = apiConfig.metrc;
+  const aroya = apiConfig.aroya;
+
+  function setMetrc(key, val) {
+    setApiConfig(c => ({ ...c, metrc: { ...c.metrc, [key]: val, connected: false } }));
+    setMetrcStatus(null);
+  }
+  function setAroya(key, val) {
+    setApiConfig(c => ({ ...c, aroya: { ...c.aroya, [key]: val, connected: false } }));
+    setAroyaStatus(null);
+  }
+
+  async function testMetrc() {
+    setTesting(true);
+    MetrcService.init(apiConfig.metrc);
+    const r = await MetrcService.testConnection();
+    setApiConfig(c => ({ ...c, metrc: { ...c.metrc, connected: r.ok } }));
+    setMetrcStatus(r);
+    setTesting(false);
+  }
+
+  async function testAroya() {
+    setTesting(true);
+    AroyaService.init(apiConfig.aroya);
+    const r = await AroyaService.testConnection();
+    setApiConfig(c => ({ ...c, aroya: { ...c.aroya, connected: r.ok, roomCount: r.roomCount || 0 } }));
+    setAroyaStatus(r);
+    setTesting(false);
+  }
+
+  const F = T; // alias theme
+  const inputStyle = { width: "100%", padding: "7px 10px", borderRadius: 7, border: `1px solid ${F.border}`, background: F.surface, color: F.text, fontSize: 13, fontFamily: "'Roboto'", boxSizing: "border-box" };
+  const revealBtn = (show, toggle) => (
+    <button onClick={toggle} style={{ position: "absolute", right: 10, top: "50%", transform: "translateY(-50%)", background: "none", border: "none", cursor: "pointer", color: F.textMuted, padding: 0 }}>
+      <Eye size={14} />
+    </button>
+  );
+  const StatusPill = ({ ok, msg }) => ok === null ? null : (
+    <span style={{ display: "inline-flex", alignItems: "center", gap: 5, fontSize: 12, color: ok ? "#10b981" : "#ef4444", fontWeight: 600 }}>
+      <span style={{ width: 7, height: 7, borderRadius: "50%", background: ok ? "#10b981" : "#ef4444", display: "inline-block" }} />
+      {ok ? msg || "Connected" : msg || "Failed"}
+    </span>
+  );
+
+  return (
+    <div className="content-scroll">
+      <div className="page-title" style={{ marginBottom: 6 }}>Integrations</div>
+      <div style={{ fontSize: 13, color: F.textMuted, marginBottom: 24 }}>Connect METRC and AROYA to populate the portal with live data from your clients' facilities.</div>
+
+      {/* Tab bar */}
+      <div style={{ display: "flex", gap: 4, marginBottom: 24, borderBottom: `1px solid ${F.border}`, paddingBottom: 0 }}>
+        {["metrc", "aroya"].map(t => (
+          <button key={t} onClick={() => setTab(t)} style={{ padding: "8px 20px", fontWeight: 600, fontSize: 13, background: "none", border: "none", borderBottom: tab === t ? `2px solid ${F.accent}` : "2px solid transparent", color: tab === t ? F.accent : F.textMuted, cursor: "pointer", textTransform: "uppercase", letterSpacing: "0.5px", fontFamily: "'IBM Plex Mono'" }}>
+            {t === "metrc" ? "METRC" : "AROYA"}
+          </button>
+        ))}
+      </div>
+
+      {/* ── METRC Tab ── */}
+      {tab === "metrc" && (
+        <div style={{ maxWidth: 520, display: "flex", flexDirection: "column", gap: 18 }}>
+          <div style={{ background: F.surface, border: `1px solid ${F.border}`, borderRadius: 10, padding: 16, fontSize: 12, color: F.textMuted, lineHeight: 1.6 }}>
+            <strong style={{ color: F.text }}>METRC</strong> — cannabis seed-to-sale compliance tracking. Provides plant counts, harvest batches, package inventory, and lab test results per facility. Uses state-specific API endpoints and HTTP Basic Auth with two keys.
+          </div>
+
+          <div>
+            <label style={{ fontSize: 12, fontWeight: 600, color: F.textMuted, display: "block", marginBottom: 6, textTransform: "uppercase", letterSpacing: "0.4px" }}>State</label>
+            <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+              {["CA","CO","OR","Other"].map(s => (
+                <button key={s} onClick={() => setMetrc("state", s)} style={{ padding: "5px 14px", borderRadius: 20, border: `1px solid ${metrc.state === s ? F.accent : F.border}`, background: metrc.state === s ? `${F.accent}18` : F.surface, color: metrc.state === s ? F.accent : F.textMuted, fontSize: 12, cursor: "pointer", fontFamily: "'Roboto'" }}>{s}</button>
+              ))}
+            </div>
+            <div style={{ fontSize: 11, color: F.textMuted, marginTop: 6 }}>Endpoint: <code style={{ background: F.bg, padding: "1px 5px", borderRadius: 3, fontSize: 10 }}>https://api-{(metrc.state||"ca").toLowerCase()}.metrc.com</code></div>
+          </div>
+
+          <div>
+            <label style={{ fontSize: 12, fontWeight: 600, color: F.textMuted, display: "block", marginBottom: 6, textTransform: "uppercase", letterSpacing: "0.4px" }}>Integrator API Key</label>
+            <div style={{ position: "relative" }}>
+              <input type={showMetrcKey1 ? "text" : "password"} value={metrc.integratorKey} onChange={e => setMetrc("integratorKey", e.target.value)} placeholder="Your software integrator key" style={{ ...inputStyle, paddingRight: 34 }} />
+              {revealBtn(showMetrcKey1, () => setShowMetrcKey1(v => !v))}
+            </div>
+          </div>
+
+          <div>
+            <label style={{ fontSize: 12, fontWeight: 600, color: F.textMuted, display: "block", marginBottom: 6, textTransform: "uppercase", letterSpacing: "0.4px" }}>User API Key</label>
+            <div style={{ position: "relative" }}>
+              <input type={showMetrcKey2 ? "text" : "password"} value={metrc.userKey} onChange={e => setMetrc("userKey", e.target.value)} placeholder="Client's user API key from METRC" style={{ ...inputStyle, paddingRight: 34 }} />
+              {revealBtn(showMetrcKey2, () => setShowMetrcKey2(v => !v))}
+            </div>
+            <div style={{ fontSize: 11, color: F.textMuted, marginTop: 4 }}>Found in METRC → top-right menu → API Keys</div>
+          </div>
+
+          <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+            <button className="btn-primary" onClick={testMetrc} disabled={testing || !metrc.integratorKey}>
+              {testing ? "Testing…" : "Test Connection"}
+            </button>
+            {metrcStatus && <StatusPill ok={metrcStatus.ok} msg={metrcStatus.ok ? `Connected · ${metrcStatus.facilityCount} facilit${metrcStatus.facilityCount===1?"y":"ies"}` : metrcStatus.error} />}
+            {!metrcStatus && metrc.connected && <StatusPill ok={true} msg="Connected" />}
+          </div>
+
+          {metrc.connected && (
+            <div>
+              <label style={{ fontSize: 12, fontWeight: 600, color: F.textMuted, display: "block", marginBottom: 6, textTransform: "uppercase", letterSpacing: "0.4px" }}>Facility</label>
+              <select value={metrc.facilityId} onChange={e => setMetrc("facilityId", e.target.value)} style={{ ...inputStyle }}>
+                <option value="">— Select facility —</option>
+                <option value="fac-001">GreenLeaf Farms – Main (C10-0000123-LIC)</option>
+                <option value="fac-002">SunRise Cultivation – North Site (C10-0000456-LIC)</option>
+                <option value="fac-003">Peak Harvest Co. – Greenhouse 2 (C10-0000789-LIC)</option>
+              </select>
+            </div>
+          )}
+
+          <div style={{ background: `${F.accent}08`, border: `1px solid ${F.accent}20`, borderRadius: 8, padding: 12 }}>
+            <div style={{ fontSize: 11, fontWeight: 700, color: F.accent, marginBottom: 6, fontFamily: "'IBM Plex Mono'", textTransform: "uppercase" }}>Data This Powers</div>
+            <div style={{ fontSize: 12, color: F.textMuted, display: "flex", flexDirection: "column", gap: 3 }}>
+              <span><SourceBadge source="METRC" /> Plant batch counts &amp; growth phases per room</span>
+              <span><SourceBadge source="METRC" /> Active harvest batches with wet/dry weights</span>
+              <span><SourceBadge source="METRC" /> Package inventory &amp; compliance status</span>
+              <span><SourceBadge source="METRC" /> Lab test results (THC, CBD, terpenes, pass/fail)</span>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ── AROYA Tab ── */}
+      {tab === "aroya" && (
+        <div style={{ maxWidth: 520, display: "flex", flexDirection: "column", gap: 18 }}>
+          <div style={{ background: F.surface, border: `1px solid ${F.border}`, borderRadius: 10, padding: 16, fontSize: 12, color: F.textMuted, lineHeight: 1.6 }}>
+            <strong style={{ color: F.text }}>AROYA</strong> — cultivation management platform with real-time sensor data. Provides climate (temp, RH, CO₂, VPD), substrate (EC, VWC, soil temp), and irrigation event data synced every 3 minutes. Uses Bearer token authentication.
+          </div>
+
+          <div>
+            <label style={{ fontSize: 12, fontWeight: 600, color: F.textMuted, display: "block", marginBottom: 6, textTransform: "uppercase", letterSpacing: "0.4px" }}>API Key</label>
+            <div style={{ position: "relative" }}>
+              <input type={showAroyaKey ? "text" : "password"} value={aroya.apiKey} onChange={e => setAroya("apiKey", e.target.value)} placeholder="AROYA API key (contact AROYA support)" style={{ ...inputStyle, paddingRight: 34 }} />
+              {revealBtn(showAroyaKey, () => setShowAroyaKey(v => !v))}
+            </div>
+            <div style={{ fontSize: 11, color: F.textMuted, marginTop: 4 }}>Endpoint: <code style={{ background: F.bg, padding: "1px 5px", borderRadius: 3, fontSize: 10 }}>https://app.aroya.io/api/</code></div>
+          </div>
+
+          <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+            <button className="btn-primary" onClick={testAroya} disabled={testing || !aroya.apiKey}>
+              {testing ? "Testing…" : "Test Connection"}
+            </button>
+            {aroyaStatus && <StatusPill ok={aroyaStatus.ok} msg={aroyaStatus.ok ? `Connected · ${aroyaStatus.roomCount} rooms` : aroyaStatus.error} />}
+            {!aroyaStatus && aroya.connected && <StatusPill ok={true} msg={`Connected · ${aroya.roomCount} rooms`} />}
+          </div>
+
+          {aroya.connected && (
+            <div>
+              <div style={{ fontSize: 12, fontWeight: 600, color: F.textMuted, marginBottom: 8, textTransform: "uppercase", letterSpacing: "0.4px" }}>Room Mapping</div>
+              <div style={{ background: F.surface, border: `1px solid ${F.border}`, borderRadius: 8, overflow: "hidden" }}>
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", padding: "8px 12px", background: F.bg, borderBottom: `1px solid ${F.border}`, fontSize: 11, fontWeight: 700, color: F.textMuted, textTransform: "uppercase", letterSpacing: "0.4px" }}>
+                  <span>AROYA Room</span><span>Portal Room Type</span>
+                </div>
+                {AROYA_ROOMS_MOCK.map(r => (
+                  <div key={r.id} style={{ display: "grid", gridTemplateColumns: "1fr 1fr", padding: "8px 12px", borderBottom: `1px solid ${F.border}40`, fontSize: 12 }}>
+                    <span style={{ color: F.text }}>{r.name}</span>
+                    <span style={{ color: F.textMuted }}>{r.name}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          <div style={{ background: "#3b82f608", border: "1px solid #3b82f620", borderRadius: 8, padding: 12 }}>
+            <div style={{ fontSize: 11, fontWeight: 700, color: "#2563eb", marginBottom: 6, fontFamily: "'IBM Plex Mono'", textTransform: "uppercase" }}>Data This Powers</div>
+            <div style={{ fontSize: 12, color: F.textMuted, display: "flex", flexDirection: "column", gap: 3 }}>
+              <span><SourceBadge source="AROYA" /> Real-time climate: temp, RH, CO₂, VPD per room</span>
+              <span><SourceBadge source="AROYA" /> Substrate: EC, VWC, soil temperature per zone</span>
+              <span><SourceBadge source="AROYA" /> Irrigation events: volume, runoff %, inflow/outflow EC &amp; pH</span>
+              <span><SourceBadge source="AROYA" /> Auto-populate Source Water fields in Field Assessment</span>
+              <span><SourceBadge source="AROYA" /> Red Flags generated from out-of-range sensor readings</span>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 function StaffAdvisorDashboard() {
   const { staffUser } = useContext(AppCtx);
   const [timeframe, setTimeframe] = useState("today");
@@ -4442,6 +4777,29 @@ function StaffAdvisorDashboard() {
   );
 }
 
+/* ── Field Assessment shared render helpers (module-level, reference global T) ── */
+function SHead({ label }) {
+  return <div style={{ fontSize: 11, color: T.textMuted, fontFamily: "'IBM Plex Mono'", textTransform: "uppercase", letterSpacing: "0.5px", marginTop: 18, marginBottom: 8, borderBottom: `1px solid ${T.border}40`, paddingBottom: 5 }}>{label}</div>;
+}
+function G2({ children }) {
+  return <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px 16px" }}>{children}</div>;
+}
+function EF({ label, type = "text", opts, val, set, ph }) {
+  return (
+    <div>
+      <div style={{ fontSize: 11, color: T.textMuted, marginBottom: 3 }}>{label}</div>
+      {opts ? (
+        <select value={val || ""} onChange={e => set(e.target.value)} style={{ width: "100%", padding: "5px 8px", borderRadius: 6, border: `1px solid ${T.border}`, background: T.surface, color: val ? T.text : T.textMuted, fontSize: 12, fontFamily: "'Roboto'" }}>
+          <option value="">—</option>
+          {opts.map(o => <option key={o} value={o}>{o}</option>)}
+        </select>
+      ) : (
+        <input type={type} value={val || ""} onChange={e => set(e.target.value)} placeholder={ph} style={{ width: "100%", padding: "5px 8px", borderRadius: 6, border: `1px solid ${T.border}`, background: T.surface, color: T.text, fontSize: 12, boxSizing: "border-box", fontFamily: "'Roboto'" }} />
+      )}
+    </div>
+  );
+}
+
 function StaffFieldAssessment() {
   const { staffClient, staffLocation, staffUser, staffRole } = useContext(AppCtx);
   const [openSection, setOpenSection] = useState("setup");
@@ -4457,6 +4815,11 @@ function StaffFieldAssessment() {
   const [recReason, setRecReason] = useState("");
   const [assessComments, setAssessComments] = useState([]);
   const [submitted, setSubmitted] = useState(false);
+  const [roomEquip, setRoomEquip] = useState({});
+  function setEquip(room, key, val) {
+    setRoomEquip(e => ({ ...e, [room]: { ...(e[room] || {}), [key]: val } }));
+  }
+  const eq = r => roomEquip[r] || {};
 
   const SECTIONS = [
     { id: "setup",           label: "Assessment Setup" },
@@ -4472,7 +4835,7 @@ function StaffFieldAssessment() {
       return "not-started";
     }
     if (id === "walkthrough") {
-      const n = Object.keys(checked).length + Object.values(roomNotes).filter(Boolean).length;
+      const n = Object.keys(checked).length + Object.values(roomNotes).filter(Boolean).length + Object.values(roomEquip).reduce((a, r) => a + Object.keys(r).length, 0);
       if (n > 5) return "complete";
       if (n > 0) return "in-progress";
       return "not-started";
@@ -4500,7 +4863,7 @@ function StaffFieldAssessment() {
       <CheckCircle2 size={48} color="#10b981" />
       <div className="page-title" style={{ textAlign: "center" }}>Assessment Submitted!</div>
       <div style={{ color: T.textMuted, fontSize: 13 }}>Report saved for {staffClient || "client"} — {staffLocation || "location"}</div>
-      <button className="btn-primary" onClick={() => { setOpenSection("setup"); setChecked({}); setRoomNotes({}); setRecs([]); setAssessComments([]); setSubmitted(false); }}>Start New Assessment</button>
+      <button className="btn-primary" onClick={() => { setOpenSection("setup"); setChecked({}); setRoomNotes({}); setRoomEquip({}); setRecs([]); setAssessComments([]); setSubmitted(false); }}>Start New Assessment</button>
     </div>
   );
 
@@ -4566,19 +4929,118 @@ function StaffFieldAssessment() {
                 <div className="assess-accordion-content" style={{ paddingBottom: 20 }}>
                   <StaffContextBanner />
                   <div style={{ display: "flex", marginTop: 16 }}>
+                    {/* ── Room sidebar ── */}
                     <div className="room-sidebar">
                       <div style={{ fontSize: 11, color: T.textMuted, fontFamily: "'IBM Plex Mono'", textTransform: "uppercase", letterSpacing: "0.5px", marginBottom: 8, paddingLeft: 12 }}>Rooms</div>
                       {ROOM_TYPES.map(r => (
                         <button key={r} className={`room-btn${activeRoom === r ? " active" : ""}`} onClick={() => setActiveRoom(r)}>
                           {r}
-                          {Object.keys(checked).some(k => k.startsWith(r + "::")) && (
+                          {(Object.keys(checked).some(k => k.startsWith(r + "::")) || Object.keys(eq(r)).length > 0) && (
                             <Check size={10} color="#10b981" style={{ marginLeft: 4 }} />
                           )}
                         </button>
                       ))}
                     </div>
-                    <div style={{ flex: 1 }}>
-                      <div style={{ marginBottom: 6, fontSize: 13, fontWeight: 600, color: T.text }}>{activeRoom} — Checklist</div>
+
+                    {/* ── Room content ── */}
+                    <div style={{ flex: 1, paddingLeft: 16 }}>
+
+                      {/* ── Equipment (all rooms) ── */}
+                      <SHead label="Equipment" />
+                      <G2>
+                        <EF label="AC — Brand" val={eq(activeRoom).acBrand} set={v => setEquip(activeRoom, "acBrand", v)} />
+                        <EF label="AC — Style" opts={["Split","Mini-Split","Packaged","Chilled Water","Other"]} val={eq(activeRoom).acStyle} set={v => setEquip(activeRoom, "acStyle", v)} />
+                        <EF label="AC — Tons" type="number" val={eq(activeRoom).acTons} set={v => setEquip(activeRoom, "acTons", v)} ph="0.0" />
+                        <EF label="AC — # Units" type="number" val={eq(activeRoom).acUnits} set={v => setEquip(activeRoom, "acUnits", v)} ph="0" />
+                        <EF label="Dehumidifier — Brand" val={eq(activeRoom).dhBrand} set={v => setEquip(activeRoom, "dhBrand", v)} />
+                        <EF label="Dehumidifier — Pints/day" type="number" val={eq(activeRoom).dhPints} set={v => setEquip(activeRoom, "dhPints", v)} ph="0" />
+                        <EF label="Dehumidifier — # Units" type="number" val={eq(activeRoom).dhUnits} set={v => setEquip(activeRoom, "dhUnits", v)} ph="0" />
+                        <EF label="Fans — Brand" val={eq(activeRoom).fanBrand} set={v => setEquip(activeRoom, "fanBrand", v)} />
+                        <EF label="Fans — # Units" type="number" val={eq(activeRoom).fanUnits} set={v => setEquip(activeRoom, "fanUnits", v)} ph="0" />
+                        <EF label="Lighting — Brand" val={eq(activeRoom).lightBrand} set={v => setEquip(activeRoom, "lightBrand", v)} />
+                        <EF label="Lighting — Type" opts={["LED","HPS","CMH","T5","Fluorescent","Other"]} val={eq(activeRoom).lightType} set={v => setEquip(activeRoom, "lightType", v)} />
+                        <EF label="Lighting — # Fixtures" type="number" val={eq(activeRoom).lightCount} set={v => setEquip(activeRoom, "lightCount", v)} ph="0" />
+                        <EF label="Lighting — Watts/fixture" type="number" val={eq(activeRoom).lightWatts} set={v => setEquip(activeRoom, "lightWatts", v)} ph="0" />
+                      </G2>
+
+                      {/* ── Fertigation Room config ── */}
+                      {activeRoom === "Fertigation Room" && (
+                        <>
+                          <SHead label="Source Water" />
+                          <G2>
+                            <EF label="Water Type" opts={["Municipal","Well","RO","Filtered","Other"]} val={eq(activeRoom).waterType} set={v => setEquip(activeRoom, "waterType", v)} />
+                            <EF label="pH" type="number" val={eq(activeRoom).waterPH} set={v => setEquip(activeRoom, "waterPH", v)} ph="7.0" />
+                            <EF label="EC (mS/cm)" type="number" val={eq(activeRoom).waterEC} set={v => setEquip(activeRoom, "waterEC", v)} ph="0.0" />
+                          </G2>
+                          <SHead label="Filtration" />
+                          <G2>
+                            <EF label="System" opts={["RO","Carbon","UV","Combination","None"]} val={eq(activeRoom).filtSystem} set={v => setEquip(activeRoom, "filtSystem", v)} />
+                            <EF label="GPD Rating" type="number" val={eq(activeRoom).filtGPD} set={v => setEquip(activeRoom, "filtGPD", v)} ph="0" />
+                            <EF label="Membrane Brand" val={eq(activeRoom).filtMembrane} set={v => setEquip(activeRoom, "filtMembrane", v)} />
+                            <EF label="Last Filter Change" type="date" val={eq(activeRoom).filtLastChange} set={v => setEquip(activeRoom, "filtLastChange", v)} />
+                            <EF label="Pathogen Filtration" opts={["Yes","No","Unknown"]} val={eq(activeRoom).filtPathogen} set={v => setEquip(activeRoom, "filtPathogen", v)} />
+                          </G2>
+                          <SHead label="Storage & Injection" />
+                          <G2>
+                            <EF label="Storage Tank (gal)" type="number" val={eq(activeRoom).tankSize} set={v => setEquip(activeRoom, "tankSize", v)} ph="0" />
+                            <EF label="Injection System" opts={["Dosatron","Bluelab","Priva","DoseIt","Custom","Other"]} val={eq(activeRoom).injSystem} set={v => setEquip(activeRoom, "injSystem", v)} />
+                            <EF label="Injection Design" opts={["Single-head","Dual-head","Inline","Bypass","Other"]} val={eq(activeRoom).injDesign} set={v => setEquip(activeRoom, "injDesign", v)} />
+                            <EF label="Batch Tank (gal)" type="number" val={eq(activeRoom).injBatchTank} set={v => setEquip(activeRoom, "injBatchTank", v)} ph="0" />
+                          </G2>
+                          <SHead label="Nutrients & Controller" />
+                          <G2>
+                            <EF label="Nutrient Brand" val={eq(activeRoom).nutBrand} set={v => setEquip(activeRoom, "nutBrand", v)} />
+                            <EF label="Stock Tank (gal)" type="number" val={eq(activeRoom).nutTankSize} set={v => setEquip(activeRoom, "nutTankSize", v)} ph="0" />
+                            <EF label="Irrigation Controller" val={eq(activeRoom).controller} set={v => setEquip(activeRoom, "controller", v)} />
+                          </G2>
+                        </>
+                      )}
+
+                      {/* ── Clone Room config ── */}
+                      {activeRoom === "Clone Room" && (
+                        <>
+                          <SHead label="Clone Configuration" />
+                          <G2>
+                            <EF label="Clone Media" opts={["Rockwool","Oasis","Peat","Rapid Rooters","Coco","Other"]} val={eq(activeRoom).cloneMedia} set={v => setEquip(activeRoom, "cloneMedia", v)} />
+                            <EF label="Flat Type" opts={["Standard Tray","Dome Tray","Other"]} val={eq(activeRoom).flatType} set={v => setEquip(activeRoom, "flatType", v)} />
+                            <EF label="Insert Type" opts={["Cube","Plug","Jiffy","Oasis","Other"]} val={eq(activeRoom).insertType} set={v => setEquip(activeRoom, "insertType", v)} />
+                            <EF label="Inserts / Flat" type="number" val={eq(activeRoom).insertsFlat} set={v => setEquip(activeRoom, "insertsFlat", v)} ph="0" />
+                            <EF label="Clones / Tray" type="number" val={eq(activeRoom).clonesTray} set={v => setEquip(activeRoom, "clonesTray", v)} ph="0" />
+                            <EF label="Rack Size" val={eq(activeRoom).rackSize} set={v => setEquip(activeRoom, "rackSize", v)} ph="e.g. 4x8" />
+                            <EF label="Trays / Rack" type="number" val={eq(activeRoom).traysRack} set={v => setEquip(activeRoom, "traysRack", v)} ph="0" />
+                          </G2>
+                        </>
+                      )}
+
+                      {/* ── Dry Room config ── */}
+                      {activeRoom === "Dry Room" && (
+                        <>
+                          <SHead label="Dry / Cure Configuration" />
+                          <G2>
+                            <EF label="Target Temp (°F)" type="number" val={eq(activeRoom).dryTemp} set={v => setEquip(activeRoom, "dryTemp", v)} ph="65" />
+                            <EF label="Target RH (%)" type="number" val={eq(activeRoom).dryRH} set={v => setEquip(activeRoom, "dryRH", v)} ph="60" />
+                            <EF label="Avg Hang Time (days)" type="number" val={eq(activeRoom).hangDays} set={v => setEquip(activeRoom, "hangDays", v)} ph="10" />
+                            <EF label="Cure Containers" opts={["Yes","No"]} val={eq(activeRoom).cureContainers} set={v => setEquip(activeRoom, "cureContainers", v)} />
+                          </G2>
+                        </>
+                      )}
+
+                      {/* ── Trim Room config ── */}
+                      {activeRoom === "Trim Room" && (
+                        <>
+                          <SHead label="Trim Equipment" />
+                          <G2>
+                            <EF label="Trim Machine Brand" val={eq(activeRoom).trimBrand} set={v => setEquip(activeRoom, "trimBrand", v)} />
+                            <EF label="Trim Machine Model" val={eq(activeRoom).trimModel} set={v => setEquip(activeRoom, "trimModel", v)} />
+                            <EF label="Scale Brand" val={eq(activeRoom).scaleBrand} set={v => setEquip(activeRoom, "scaleBrand", v)} />
+                            <EF label="# Scales" type="number" val={eq(activeRoom).scaleCount} set={v => setEquip(activeRoom, "scaleCount", v)} ph="0" />
+                            <EF label="Air Filtration Brand" val={eq(activeRoom).airFiltBrand} set={v => setEquip(activeRoom, "airFiltBrand", v)} />
+                          </G2>
+                        </>
+                      )}
+
+                      {/* ── Inspection Checklist ── */}
+                      <SHead label="Inspection Checklist" />
                       {(ROOM_CHECKLISTS[activeRoom] || []).map(item => {
                         const key = `${activeRoom}::${item}`;
                         const isChecked = !!checked[key];
@@ -4589,7 +5051,8 @@ function StaffFieldAssessment() {
                           </div>
                         );
                       })}
-                      <div style={{ marginTop: 12 }}>
+
+                      <div style={{ marginTop: 14 }}>
                         <label style={{ fontSize: 12, color: T.textMuted, display: "block", marginBottom: 4 }}>Room Notes</label>
                         <textarea value={roomNotes[activeRoom] || ""} onChange={e => setRoomNotes(n => ({ ...n, [activeRoom]: e.target.value }))} placeholder="Observations for this room…" rows={2} style={{ width: "100%", background: T.surface, border: `1px solid ${T.border}`, borderRadius: 8, padding: "8px 12px", color: T.text, fontSize: 13, resize: "vertical", boxSizing: "border-box", fontFamily: "'Roboto'" }} />
                       </div>
@@ -4694,7 +5157,7 @@ function StaffFieldAssessment() {
                   </div>
                   <div style={{ display: "flex", gap: 10 }}>
                     <button className="btn-primary" onClick={() => setSubmitted(true)}>Submit Report</button>
-                    <button className="btn-ghost" onClick={() => { setOpenSection("setup"); setChecked({}); setRoomNotes({}); setRecs([]); setAssessComments([]); }}>Start New</button>
+                    <button className="btn-ghost" onClick={() => { setOpenSection("setup"); setChecked({}); setRoomNotes({}); setRoomEquip({}); setRecs([]); setAssessComments([]); }}>Start New</button>
                   </div>
                 </div>
               )}
@@ -5558,8 +6021,9 @@ function renderSection(id, rk) {
     case "rm-financing":    return <StaffRMFinancing        key={rk} />;
     case "rm-team":         return <StaffRMTeam             key={rk} />;
     // ── Shared staff sections
-    case "staff-hub":  return <ClientHub      key={rk} />;
-    case "staff-chat": return <StaffChatSection key={rk} />;
+    case "staff-hub":          return <ClientHub              key={rk} />;
+    case "staff-chat":         return <StaffChatSection       key={rk} />;
+    case "staff-integrations": return <StaffIntegrationsSection key={rk} />;
     default: return <HomeSection />;
   }
 }
@@ -5584,6 +6048,15 @@ function App() {
   const [activeAssessment, setActiveAssessment] = useState(null);
   const [clientActivity, setClientActivity] = useState(CLIENT_ACTIVITY_INIT);
   const [staffChannel, setStaffChannel] = useState(STAFF_CHANNEL_INIT);
+  const [apiConfig, setApiConfig] = useState({
+    metrc: { state: "CA", integratorKey: "", userKey: "", facilityId: "", connected: false },
+    aroya: { apiKey: "", connected: false, roomCount: 0 },
+  });
+
+  useEffect(() => {
+    MetrcService.init(apiConfig.metrc);
+    AroyaService.init(apiConfig.aroya);
+  }, [apiConfig]);
 
   useEffect(() => {
     document.documentElement.classList.toggle("dark-mode", darkMode);
@@ -5815,7 +6288,7 @@ function App() {
             </div>
           </div>
 
-          <AppCtx.Provider value={{ navigate, refreshKey, staffRole, staffUser, staffClient, setStaffClient, staffLocation, setStaffLocation, activeAssessment, setActiveAssessment, clientActivity, setClientActivity, staffChannel, setStaffChannel }}>
+          <AppCtx.Provider value={{ navigate, refreshKey, staffRole, staffUser, staffClient, setStaffClient, staffLocation, setStaffLocation, activeAssessment, setActiveAssessment, clientActivity, setClientActivity, staffChannel, setStaffChannel, apiConfig, setApiConfig }}>
             <div className="content-scroll">
               {renderSection(activeId, refreshKey)}
             </div>
